@@ -1,12 +1,10 @@
 import os
 import logging
-from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder, CommandHandler, ContextTypes
-)
+from telegram.ext import ApplicationBuilder, CommandHandler
 from study_tracker import (
-    rec, daily, weekly, leaderboard, streak, setweekly, progressw, deletew,
-    setdaily, progressd, deleted, update, debt, stats, delete_time, reset, start
+    start, help, rec, daily, weekly, leaderboard, streak,
+    setweekly, progressw, deletew, setdaily, progressd,
+    deleted, update, debt, stats, delete_time, reset
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +14,7 @@ if __name__ == '__main__':
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help))
     app.add_handler(CommandHandler("rec", rec))
     app.add_handler(CommandHandler("daily", daily))
     app.add_handler(CommandHandler("weekly", weekly))
@@ -33,5 +32,5 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler("delete", delete_time))
     app.add_handler(CommandHandler("reset", reset))
 
-    print("Study Bot is running...")
+    print("✅ Bot is running...")
     app.run_polling()
