@@ -18,6 +18,13 @@ db = client["study_bot"]
 users = db["users"]
 
 # === Group-only decorator ===
+
+@group_only
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "👋 Welcome to Study Bot!\nUse /rec to log your study time.\nType /help to see all commands."
+    )
+    
 def group_only(func):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if update.effective_chat.id != GROUP_ID:
