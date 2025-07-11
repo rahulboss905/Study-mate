@@ -3,26 +3,43 @@ import re
 from datetime import datetime
 from pymongo import MongoClient
 from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder, CommandHandler, ContextTypes
-)
-
-# === ENV Variables ===
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-MONGO_URI = os.getenv("MONGO_URI")
-GROUP_ID = int(os.getenv("GROUP_ID", ""))  # Load from env
+from telegram.ext import ContextTypes
 
 # === MongoDB Setup ===
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client["study_bot"]
 users = db["users"]
 
-# === Group-only decorator ===
+# === Group-only Decorator ===
+def group_only(func):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        GROUP_ID = int(os.getenv("GROUP_ID", "-1001234567890"))
+        if update.effective_chat.id != GROUP_ID:
+            await update.message.reply_text("❌ This bot only works in the official study group.")
+            return
+        return await func(update, context)
+    return wrapper
 
+# === /start ===
 @group_only
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "👋 Welcome to Study Bot!\nUse /rec to log your study time.\nType /help to see all commands."
+    )
+
+# === /help ===
+@group_only
+async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "📖 *Study Bot Commands Guide:*\n\n"
+        "/rec [time] — Log study time\n"
+        "/daily — Show today's top learners\n"
+        "/leaderboard — Total leaderboard\n"
+        "/streak — Streak leaderboard\n"
+        "/stats — View your stats\n"
+        "/help — Show this help",
+        parse_mode="Markdown"
     )
     
 def group_only(func):
