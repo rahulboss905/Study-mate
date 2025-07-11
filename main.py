@@ -33,3 +33,4 @@ if __name__ == "__main__":
 
     logging.info("✅ Bot is running...")
     app.run_polling()
+    
