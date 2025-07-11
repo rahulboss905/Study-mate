@@ -1,11 +1,8 @@
 import os
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler
-from study_tracker import (
-    start, help, rec, daily, weekly, leaderboard, streak,
-    setweekly, progressw, deletew, setdaily, progressd,
-    deleted, update, debt, stats, delete_time, reset
-)
+from study_tracker import start
+
 
 logging.basicConfig(level=logging.INFO)
 BOT_TOKEN = os.getenv("BOT_TOKEN")
