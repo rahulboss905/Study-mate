@@ -3,10 +3,10 @@ import os
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler
 
-# Import the commands that actually exist in study_tracker.py
+# Import commands from study_tracker.py
 from study_tracker import (
     start,
-    help as help_cmd,
+    help_command,
     rec,
     daily,
     leaderboard,
@@ -23,9 +23,8 @@ if not BOT_TOKEN:
 if __name__ == "__main__":
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Core handlers that are implemented
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_cmd))
+    app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("rec", rec))
     app.add_handler(CommandHandler("daily", daily))
     app.add_handler(CommandHandler("leaderboard", leaderboard))
